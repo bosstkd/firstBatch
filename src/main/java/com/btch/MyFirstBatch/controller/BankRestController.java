@@ -1,7 +1,9 @@
 package com.btch.MyFirstBatch.controller;
 
+import com.btch.MyFirstBatch.configuration.BankTransactionItemAnaliticsProcessor;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +30,16 @@ public class BankRestController {
             System.out.println(".....");
         }
         return jobExecution.getStatus();
+    }
+
+    @Autowired
+    private BankTransactionItemAnaliticsProcessor analyticsProcessor;
+
+    @GetMapping("/analytics")
+    public Map<String, Double> analitics(){
+        Map<String, Double> map = new HashMap<>();
+        map.put("totalCredit", analyticsProcessor.getTotalCredit());
+        map.put("totalDebit", analyticsProcessor.getTotalDebit());
+        return map;
     }
 }
